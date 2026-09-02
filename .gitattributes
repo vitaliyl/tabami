@@ -1,0 +1,45 @@
+# -----------------------------------------------------------------------------
+# Tabami - Git Attributes Configuration
+# -----------------------------------------------------------------------------
+
+# Auto detect text files and perform LF normalization on checkout
+* text=auto eol=lf
+
+# Explicitly declare text files you want to always be normalized and not converted to CRLF on Windows
+*.rs text eol=lf
+*.rb text eol=lf
+*.ru text eol=lf
+*.gemspec text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.vue text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+bin/* text eol=lf
+
+# Declare binary files to prevent corruption during checkout/commit
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.icns binary
+*.svg text
+*.sqlite3 binary
+*.db binary
+*.dmg binary
+*.tar.gz binary
+*.zip binary
+*.wasm binary
+
+# GitHub Linguist Overrides
+# Ensure syntax breakdown on GitHub accurately reflects the project
+public/dist/* linguist-vendored
+gems/hanami-inertia/* linguist-detectable=true
+src-tauri/icons/* linguist-vendored

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -e
+
+# Always run from the project root
+cd "$(dirname "$0")/.."
+
+export VITE_DEV_SERVER=true
+export HANAMI_ENV=development
+
+# Detect mise runner if available
+MISE_EXEC=""
+if [ -x "$HOME/.local/bin/mise" ]; then
+  MISE_EXEC="$HOME/.local/bin/mise exec --"
+fi
+
+echo "🚀 Starting Tabami in Live Development Mode (Vue 3 + Hanami + Inertia)..."
+
+# Clean up all background processes on exit (Ctrl+C)
+cleanup() {
+  trap - SIGINT SIGTERM EXIT
+  echo ""
+  echo "🛑 Stopping Tabami dev processes..."
+  
+  if [ -n "$VITE_PID" ] && kill -0 "$VITE_PID" 2>/dev/null; then
+    kill -TERM "$VITE_PID" 2>/dev/null || true
+    pkill -P "$VITE_PID" 2>/dev/null || true
+  fi
+
+  if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
+    kill -TERM "$SERVER_PID" 2>/dev/null || true
+    pkill -P "$SERVER_PID" 2>/dev/null || true
+  fi
+
+  # Release ports if still bound
+  lsof -ti:5173 | xargs kill -9 2>/dev/null || true
+  exit 0
+}
+trap cleanup SIGINT SIGTERM EXIT
+
+# 1. Start Vite HMR Dev Server in the background
+echo "⚡ Starting Vite Dev Server with instant HMR on http://localhost:5173..."
+$MISE_EXEC npx vite --port 5173 &
+VITE_PID=$!
+
+# 2. Start Hanami Puma server
+echo "⚡ Starting Hanami Puma Server on http://localhost:2300..."
+if $MISE_EXEC bundle exec rerun --version >/dev/null 2>&1; then
+  $MISE_EXEC bundle exec rerun --background --dir app,config --ignore "public/*,tmp/*,log/*,spec/*" -- bundle exec hanami server --port 2300 &
+  SERVER_PID=$!
+else
+  $MISE_EXEC bundle exec hanami server --port 2300 &
+  SERVER_PID=$!
+fi
+
+# Wait for all processes
+wait

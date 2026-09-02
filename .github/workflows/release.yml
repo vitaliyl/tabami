@@ -1,0 +1,116 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v0.1.0)'
+        required: true
+        default: 'v0.1.0'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build-and-release:
+    name: Build & Release (${{ matrix.platform }})
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--target universal-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libssl-dev libpq-dev libsqlite3-dev
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install Frontend dependencies
+        run: npm install
+
+      - name: Build Tauri Desktop Application
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name || inputs.tag }}
+          releaseName: 'Tabami ${{ github.ref_name || inputs.tag }}'
+          releaseBody: |
+            ## 💎 Tabami Database Studio Release
+
+            See the assets below to download Tabami for macOS, Linux, and Windows.
+
+            ### macOS (Apple Silicon & Intel)
+            Install via Homebrew:
+            ```bash
+            brew tap vitaliyl/tabami
+            brew install --cask tabami
+            ```
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+  generate-checksums:
+    name: Generate Checksums & Update Homebrew Tap
+    needs: [build-and-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download release assets and compute SHA-256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name || inputs.tag }}
+        run: |
+          mkdir -p release-assets
+          cd release-assets
+          gh release download "$TAG" --pattern "*" --clobber || true
+          if [ -n "$(ls -A .)" ]; then
+            sha256sum * > ../checksums.txt || shasum -a 256 * > ../checksums.txt
+            cat ../checksums.txt
+            gh release upload "$TAG" ../checksums.txt --clobber || true
+          fi
+
+      - name: Trigger Homebrew Tap Update (if HOMEBREW_TAP_TOKEN secret configured)
+        if: env.TAP_TOKEN != ''
+        env:
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          TAG: ${{ github.ref_name || inputs.tag }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TAP_TOKEN" \
+            https://api.github.com/repos/vitaliyl/homebrew-tabami/dispatches \
+            -d "{\"event_type\": \"release\", \"client_payload\": {\"version\": \"${TAG#v}\"}}" || true
