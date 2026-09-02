@@ -1,0 +1,89 @@
+# -----------------------------------------------------------------------------
+# Tabami - Git Ignore Rules
+# -----------------------------------------------------------------------------
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+*.crt
+
+# Node.js & Vite
+node_modules/
+dist/
+dist-ssr/
+public/dist/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.eslintcache
+.stylelintcache
+
+# Rust & Tauri
+src-tauri/target/
+src-tauri/gen/
+**/*.rs.bk
+*.pdb
+
+# Ruby & Bundler
+/.bundle/
+/vendor/bundle/
+/log/
+/tmp/
+*.log
+.byebug_history
+.ruby-lsp/
+/coverage/
+
+# Database Files & Local Connection Data
+# (Keep test/production database payloads and user credentials private)
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-wal
+/db/*.sqlite3-shm
+/db/*.db
+/db/saved_connections.json
+*.sqlite
+*.sqlite3
+*.db
+.tabami.json
+.dbviewer_events.json
+.dbviewer_latest_plan.json
+
+# IDE & Editor Configurations
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Build & Release Artifacts
+*.dmg
+*.app/
+*.deb
+*.rpm
+*.AppImage
+*.msi
+*.exe
+*.zip
+*.tar.gz

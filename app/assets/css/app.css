@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  html.light {
+    /* Light Theme: Washi, Gin-nezu, Shiro-urushi */
+    --sumi-50: 15 23 42;       /* #0f172a Deep Sumi Ink Text */
+    --sumi-100: 30 41 59;      /* #1e293b Primary Text */
+    --sumi-200: 51 65 85;      /* #334155 High Contrast Text */
+    --sumi-300: 71 85 105;     /* #475569 Readable Slate Text */
+    --sumi-400: 100 116 139;   /* #64748b Secondary Muted Text */
+    --sumi-500: 148 163 184;   /* #94a3b8 Tertiary Muted */
+    --sumi-600: 175 185 200;   /* #afb9c8 Border subtle */
+    --sumi-650: 203 213 225;   /* #cbd5e1 Border medium */
+    --sumi-700: 218 225 233;   /* #dae1e9 Border strong */
+    --sumi-750: 226 232 240;   /* #e2e8f0 Gin-nezu Silver Hairline */
+    --sumi-800: 238 242 246;   /* #eef2f6 Active Control Surface */
+    --sumi-850: 243 245 249;   /* #f3f5f9 Sub-panel / Hover State */
+    --sumi-900: 255 255 255;   /* #ffffff Crisp Shiro Lacquer Card */
+    --sumi-950: 248 250 252;   /* #f8fafc Washi Parchment Page Base */
+
+    --app-bg: #f8fafc;
+    --app-text: #0f172a;
+    --scrollbar-track: #f8fafc;
+    --scrollbar-thumb: #cbd5e1;
+    --scrollbar-thumb-hover: #94a3b8;
+    --scrollbar-border: #e2e8f0;
+    --selection-bg: rgba(225, 29, 72, 0.18);
+    --selection-text: #9f1239;
+  }
+
+  html.matcha {
+    /* Matcha Theme: Koke, Sencha, Rikyū-cha, Yamabuki Amber */
+    --sumi-50: 10 24 18;        /* #0a1812 Deepest Pine Sumi Ink Text */
+    --sumi-100: 22 38 31;       /* #16261f Primary Ink */
+    --sumi-200: 30 43 37;       /* #1e2b25 High Contrast Forest Charcoal */
+    --sumi-300: 35 50 43;       /* #23322b Readable Sumi-Ink Slate */
+    --sumi-400: 52 74 63;       /* #344a3f Secondary Muted Sage/Moss Text */
+    --sumi-500: 78 104 90;      /* #4e685a Tertiary Muted / Placeholder */
+    --sumi-600: 109 156 97;     /* #6d9c61 Border subtle */
+    --sumi-650: 130 174 119;    /* #82ae77 Border medium */
+    --sumi-700: 152 189 142;    /* #98bd8e Border strong */
+    --sumi-750: 176 204 167;    /* #b0cca7 Herbal Green Hairline Border */
+    --sumi-800: 196 217 188;    /* #c4d9bc Active Control Surface */
+    --sumi-850: 214 229 208;    /* #d6e5d0 Sub-panel Hover State */
+    --sumi-900: 234 243 230;    /* #eaf3e6 Fresh Matcha Cream Card */
+    --sumi-950: 224 235 220;    /* #e0ebdc Soothing Green Matcha Page Base */
+
+    --app-bg: #e0ebdc;
+    --app-text: #16261f;
+    --scrollbar-track: #e0ebdc;
+    --scrollbar-thumb: #98bd8e;
+    --scrollbar-thumb-hover: #6d9c61;
+    --scrollbar-border: #b0cca7;
+    --selection-bg: rgba(30, 97, 22, 0.28);
+    --selection-text: #0a1812;
+  }
+
+  html.dark,
+  :root.dark,
+  body.dark {
+    /* Dark Theme: Sumi, Urushi, Akane */
+    --sumi-50: 248 250 252;    /* #f8fafc Brightest */
+    --sumi-100: 241 244 249;   /* #f1f4f9 Primary Text */
+    --sumi-200: 225 229 240;   /* #e1e5f0 High Contrast Text */
+    --sumi-300: 194 201 221;   /* #c2c9dd Readable Slate Text */
+    --sumi-400: 148 160 189;   /* #94a0bd Secondary Muted Text */
+    --sumi-500: 105 117 151;   /* #697597 Tertiary Muted */
+    --sumi-600: 67 76 103;     /* #434c67 */
+    --sumi-650: 55 63 86;      /* #373f56 */
+    --sumi-700: 46 53 73;      /* #2e3549 */
+    --sumi-750: 37 42 60;      /* #252a3c Obsidian Hairline */
+    --sumi-800: 30 34 48;      /* #1e2230 Elevated Control Surface */
+    --sumi-850: 23 25 36;      /* #171924 Sub-panel / Hover State */
+    --sumi-900: 18 20 28;      /* #12141c Charcoal Lacquer Card */
+    --sumi-950: 12 13 18;      /* #0c0d12 Obsidian Page Base */
+
+    --app-bg: #0c0d12;
+    --app-text: #f1f4f9;
+    --scrollbar-track: #0c0d12;
+    --scrollbar-thumb: #252a3c;
+    --scrollbar-thumb-hover: #38425d;
+    --scrollbar-border: #171924;
+    --selection-bg: rgba(225, 29, 72, 0.35);
+    --selection-text: #ffffff;
+  }
+
+  *, ::before, ::after {
+    border-color: rgb(var(--sumi-750));
+  }
+
+  body {
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    @apply antialiased font-sans;
+  }
+
+  ::selection {
+    background-color: var(--selection-bg);
+    color: var(--selection-text);
+  }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+  border: 1px solid var(--scrollbar-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Textarea transparent overlay */
+textarea.text-transparent,
+textarea[class*="text-transparent"],
+textarea.sql-editor-input {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Light & Matcha Contrast Rules */
+html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light h6 {
+  color: #0f172a !important;
+}
+
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light button.text-white,
+html.light button[class*="bg-gradient"],
+html.light button[class*="bg-emerald-6"],
+html.light button[class*="bg-emerald-7"],
+html.light button[class*="bg-rose-6"],
+html.light button[class*="bg-rose-7"],
+html.light button[class*="bg-ruby-6"],
+html.light button[class*="bg-ruby-7"],
+html.light button[class*="bg-indigo-6"],
+html.light button[class*="bg-indigo-7"] {
+  color: #ffffff !important;
+}
+
+html.matcha h1, html.matcha h2, html.matcha h3, html.matcha h4, html.matcha h5, html.matcha h6 {
+  color: #16261f !important;
+}
+
+html.matcha .text-white {
+  color: #16261f !important;
+}
+
+html.matcha button.text-white,
+html.matcha button[class*="bg-gradient"],
+html.matcha button[class*="bg-emerald-6"],
+html.matcha button[class*="bg-emerald-7"],
+html.matcha button[class*="bg-rose-6"],
+html.matcha button[class*="bg-rose-7"],
+html.matcha button[class*="bg-ruby-6"],
+html.matcha button[class*="bg-ruby-7"],
+html.matcha button[class*="bg-indigo-6"],
+html.matcha button[class*="bg-indigo-7"] {
+  color: #ffffff !important;
+}
+
+/* Sidebar Active Table Highlighting */
+html.matcha .is-selected-table,
+html.matcha button.is-selected-table {
+  background-color: #cde7cb !important;
+  border-left-color: #15803d !important;
+}
+
+html.matcha .is-selected-table .table-name-text {
+  color: #14532d !important;
+  font-weight: 700 !important;
+}
+
+html.matcha .is-selected-table .table-icon,
+html.matcha .is-selected-table .is-selected-icon {
+  color: #15803d !important;
+}
+
+html.light .is-selected-table,
+html.light button.is-selected-table {
+  background-color: #e0e7ff !important;
+  border-left-color: #4f46e5 !important;
+}
+
+html.light .is-selected-table .table-name-text {
+  color: #3730a3 !important;
+  font-weight: 700 !important;
+}
+
+html.light .is-selected-table .table-icon,
+html.light .is-selected-table .is-selected-icon {
+  color: #4f46e5 !important;
+}

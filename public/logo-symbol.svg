@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 294 294" fill="none">
+  <!-- Top Row -->
+  <rect x="0" y="0" width="88" height="88" rx="22" ry="22" fill="#1D2B21"/>
+  <rect x="103" y="0" width="88" height="88" rx="22" ry="22" fill="#1D2B21"/>
+  <rect x="206" y="0" width="88" height="88" rx="22" ry="22" fill="#1D2B21"/>
+  
+  <!-- Middle Row (Matcha) -->
+  <rect x="103" y="103" width="88" height="88" rx="22" ry="22" fill="#7F9F3C"/>
+  
+  <!-- Bottom Row -->
+  <rect x="103" y="206" width="88" height="88" rx="22" ry="22" fill="#1D2B21"/>
+</svg>

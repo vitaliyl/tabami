@@ -1,0 +1,32 @@
+[package]
+name = "tabami"
+version = "0.1.0"
+description = "Tabami Database Studio - Fast, lightweight, and modern database studio"
+authors = ["Vitaliy"]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/vitaliyl/tabami"
+homepage = "https://github.com/vitaliyl/tabami"
+readme = "../README.md"
+keywords = ["database", "sqlite", "postgres", "mysql", "tauri"]
+categories = ["database", "development-tools"]
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0", features = ["devtools"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.38", features = ["full"] }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "sqlite", "postgres", "mysql", "chrono", "json"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.8", features = ["v4", "serde"] }
+dirs = "5.0"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "z"
+strip = true
